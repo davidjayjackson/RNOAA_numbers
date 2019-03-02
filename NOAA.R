@@ -2,6 +2,7 @@ library(data.table)
 library(forecast)
 library(RSQLite)
 library(ggplot2)
+library(plotly)
 library(lubridate)
 library(xts)
 library(sqldf)
@@ -17,6 +18,7 @@ daily$Vote <- as.factor(daily$Vote)
 # Added factors for Year and Month field in Monthly table
 monthly$Year <- as.factor(monthly$Year)
 monthly$Month <-as.factor(monthly$Month)
+monthly$Vote <-as.factor(monthly$Vote)
 #
 #
 # Create YYYY-MM-DD Field
@@ -36,7 +38,7 @@ hist(monthly$Ra)
 boxplot(monthly$Ra)
 daily$ma <-ma(daily$Ra,order=180)
 plot(daily$Ymd,daily$Ra)
-lines(daily$Ymd,daily$Ra,col="red")
+lines(daily$Ymd,daily$ma,col="red")
 ggplot(data=monthly,aes(Year,Ra)) + geom_smooth() +geom_point()
 ggplot(data=daily,aes(Ymd,Ra)) + geom_point() +geom_smooth()
 #
