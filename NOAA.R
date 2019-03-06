@@ -62,15 +62,19 @@ yrmon <- sqldf("select Year,Month,count(*) as ct from daily where Vote=1 group b
 ggplot(yrmon,aes(Year,ct)) +geom_bar(stat="summary",fun.y="sum")  + geom_smooth() +labs(title="Total Reported Days with  Sunspots by Year")
 # Bar Plots + Smooth
 # Write sumary tables to solar.sqlite2 database
-#
-db <- dbConnect(SQLite(), dbname="C:/Users/davidjayjackson/Documents/GitHub/db/solar.sqlite3")
+# SQLite paths for Windows and Lunux
+# db <- dbConnect(SQLite(), dbname="C:/Users/davidjayjackson/Documents/GitHub/db/solar.sqlite3")
+db <- dbConnect(SQLite(), dbname="~/db/noaa.sqlite3")
 dbListTables(db)
 # # Creat table and Insert data.frame(overwrites existing table)
 # Convert Ymd field to Character for import into sqlite
-DAILY$Ymd <- as.character(DAILY$Ymd)
+daily$Ymd <- as.character(daily$Ymd)
+dbWriteTable(db, "monthly", monthly,overwrite=TRUE)
+dbWriteTable(db, "mty", mty,overwrite=TRUE)
+dbWriteTable(db, "daily", daily,overwrite=TRUE)
+dbWriteTable(db, "mty", mty,overwrite=TRUE)
 dbWriteTable(db, "mtd", mtd,overwrite=TRUE)
 dbWriteTable(db, "mtm", mtm,overwrite=TRUE)
-dbWriteTable(db, "mty", mty,overwrite=TRUE)
 dbWriteTable(db, "vote", vote,overwrite=TRUE)
 dbWriteTable(db, "yrmon", yrmon,overwrite=TRUE)
 dbListTables(db)
